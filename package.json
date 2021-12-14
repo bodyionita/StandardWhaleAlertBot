@@ -20,6 +20,7 @@
   "dependencies": {
     "discord.js": "^13.3.1",
     "express": "^4.17.1",
-    "realm": "^10.10.1"
+    "realm": "^10.10.1",
+    "realm-web": "^1.5.1"
   }
 }
