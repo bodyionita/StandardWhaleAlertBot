@@ -20,7 +20,8 @@
   "dependencies": {
     "@discordjs/rest": "^0.1.0-canary.0",
     "discord-api-types": "^0.25.2",
-    "discord.js": "^12.5.3",
+    "discord.js": "^13.3.1",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "realm": "^10.10.1",
     "realm-web": "^1.5.1"
