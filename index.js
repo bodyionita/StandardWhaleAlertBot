@@ -1,36 +1,48 @@
+const token = process.env['token']
 const keep_alive = require('./keep_alive')
-keep_alive.keep_alive()
+// keep_alive.keep_alive()
 
-const Realm = require('realm-web');
-const app = new Realm.App({ id: 'stakeborgdaoexplorer-wutjr' })
+const { REST } = require('@discordjs/rest');
+const { Routes } = require('discord-api-types/v9');
 
-user = null;
+const commands = [{
+  name: 'whale',
+  description: 'Replies with Alert!'
+}]; 
 
-async function get_data() {
-  user = await app.logIn(Realm.Credentials.anonymous());
-  client = app.currentUser.mongoClient("mongodb-atlas");
-  dbdata = await client
-        .db("stakeborgdao-explorer")
-        .collection("snapshot")
-        .find({}, { sort: { snapshot: -1 }, limit: 1 });
-  return dbdata;
-}
+const rest = new REST({ version: '9' }).setToken('token');
 
+(async () => {
+  try {
+    console.log('Started refreshing application (/) commands.');
 
+    await rest.put(
+      Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID),
+      { body: commands },
+    );
 
+    console.log('Successfully reloaded application (/) commands.');
+  } catch (error) {
+    console.error(error);
+  }
+})();
 
-async function main() {
-  data = await get_data()
-  return data;
-}
+const { Client, Intents } = require('discord.js');
+const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
-main()
-    .then(text => {
-        console.log(text);
-    })
-    .catch(err => {
-        // Deal with the fact the chain failed
-    });
+client.on('ready', () => {
+  console.log(`Logged in as ${client.user.tag}!`);
+});
+
+client.on('interactionCreate', async interaction => {
+  if (!interaction.isCommand()) return;
+
+  if (interaction.commandName === 'whale') {
+    await interaction.reply('Alert!');
+  }
+});
+
+client.login(token);
 
 
 
